@@ -10,19 +10,19 @@ import (
 type ConversationType int
 
 const (
-	TypeUnspecified ConversationType = iota
+	ConversationTypeUnspecified ConversationType = iota
 	New
 	Active
 )
 
 var conversationTypesId = map[ConversationType]string{
-	TypeUnspecified: "TYPE_UNSPECIFIED",
-	New:             "NEW",
-	Active:          "ACTIVE",
+	ConversationTypeUnspecified: "TYPE_UNSPECIFIED",
+	New:    "NEW",
+	Active: "ACTIVE",
 }
 
 var conversationTypesName = map[string]ConversationType{
-	"TYPE_UNSPECIFIED": TypeUnspecified,
+	"TYPE_UNSPECIFIED": ConversationTypeUnspecified,
 	"NEW":              New,
 	"ACTIVE":           Active,
 }

@@ -10,21 +10,21 @@ import (
 type SkuType int
 
 const (
-	TypeUnspecified SkuType = iota
+	SkuTypeUnspecified SkuType = iota
 	InApp
 	Subscription
 	App
 )
 
 var skuTypesId = map[SkuType]string{
-	TypeUnspecified: "TYPE_UNSPECIFIED",
-	InApp:           "IN_APP",
-	Subscription:    "SUBSCRIPTION",
-	App:             "APP",
+	SkuTypeUnspecified: "TYPE_UNSPECIFIED",
+	InApp:              "IN_APP",
+	Subscription:       "SUBSCRIPTION",
+	App:                "APP",
 }
 
 var skuTypesName = map[string]SkuType{
-	"TYPE_UNSPECIFIED": TypeUnspecified,
+	"TYPE_UNSPECIFIED": SkuTypeUnspecified,
 	"IN_APP":           InApp,
 	"SUBSCRIPTION":     Subscription,
 	"APP":              App,
