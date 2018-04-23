@@ -13,31 +13,31 @@ type AppRequest struct {
 }
 
 type User struct {
-	UserId              *string              `json:"userId"`
+	UserId              string               `json:"userId"`
 	Profile             *UserProfile         `json:"profile"`
-	AccessToken         *string              `json:"accessToken"`
+	AccessToken         string               `json:"accessToken"`
 	Permissions         []Permission         `json:"permissions"`
-	Locale              *string              `json:"locale"`
-	LastSeen            *string              `json:"lastSeen"`
-	UserStorage         *string              `json:"userStorage"`
+	Locale              string               `json:"locale"`
+	LastSeen            string               `json:"lastSeen"`
+	UserStorage         string               `json:"userStorage"`
 	PackageEntitlements []PackageEntitlement `json:"packageEntitlements"`
 }
 
 type UserProfile struct {
-	DisplayName *string `json:"displayName"`
-	GivenName   *string `json:"givenName"`
-	FamilyName  *string `json:"familyName"`
+	DisplayName string `json:"displayName"`
+	GivenName   string `json:"givenName"`
+	FamilyName  string `json:"familyName"`
 }
 
 type PackageEntitlement struct {
-	PackageName  *string       `json:"packageName"`
+	PackageName  string        `json:"packageName"`
 	Entitlements []Entitlement `json:"entitlements"`
 }
 
 type Entitlement struct {
-	Sku          *string      `json:"sku"`
-	SkuType      *SkuType     `json:"skuType"`
-	InAppDetails *interface{} `json:"inAppDetails"`
+	Sku          string      `json:"sku"`
+	SkuType      *SkuType    `json:"skuType"`
+	InAppDetails interface{} `json:"inAppDetails"`
 }
 
 type Device struct {
@@ -46,13 +46,13 @@ type Device struct {
 
 type Location struct {
 	Coordinates      *LatLng        `json:"coordinates"`
-	FormattedAddress *string        `json:"formattedAddress"`
-	ZipCode          *string        `json:"zipCode"`
-	City             *string        `json:"city"`
+	FormattedAddress string         `json:"formattedAddress"`
+	ZipCode          string         `json:"zipCode"`
+	City             string         `json:"city"`
 	PostalAddress    *PostalAddress `json:"postalAddress"`
-	Name             *string        `json:"name"`
-	PhoneNumber      *string        `json:"phoneNumber"`
-	Notes            *string        `json:"notes"`
+	Name             string         `json:"name"`
+	PhoneNumber      string         `json:"phoneNumber"`
+	Notes            string         `json:"notes"`
 }
 
 type LatLng struct {
@@ -62,16 +62,16 @@ type LatLng struct {
 
 type PostalAddress struct {
 	Revision           int      `json:"revision"`
-	RegionCode         *string  `json:"regionCode"`
-	LanguageCode       *string  `json:"languageCode"`
-	PostalCode         *string  `json:"postalCode"`
-	SortingCode        *string  `json:"sortingCode"`
-	AdministrativeArea *string  `json:"administrativeArea"`
-	Locality           *string  `json:"locality"`
-	Sublocality        *string  `json:"sublocality"`
+	RegionCode         string   `json:"regionCode"`
+	LanguageCode       string   `json:"languageCode"`
+	PostalCode         string   `json:"postalCode"`
+	SortingCode        string   `json:"sortingCode"`
+	AdministrativeArea string   `json:"administrativeArea"`
+	Locality           string   `json:"locality"`
+	Sublocality        string   `json:"sublocality"`
 	AddressLines       []string `json:"addressLines"`
 	Recipients         []string `json:"recipients"`
-	Organization       *string  `json:"organization"`
+	Organization       string   `json:"organization"`
 }
 
 type Surface struct {
@@ -79,45 +79,45 @@ type Surface struct {
 }
 
 type Capability struct {
-	Name *string `json:"name"`
+	Name string `json:"name"`
 }
 
 type Conversation struct {
-	ConversationId    *string           `json:"conversationId"`
+	ConversationId    string            `json:"conversationId"`
 	Type              *ConversationType `json:"type"`
-	ConversationToken *string           `json:"conversationToken"`
+	ConversationToken string            `json:"conversationToken"`
 }
 
 type Input struct {
 	RawInputs []RawInput `json:"rawInputs"`
-	Intent    *string    `json:"intent"`
+	Intent    string     `json:"intent"`
 	Arguments []Argument `json:"arguments"`
 }
 
 type RawInput struct {
 	InputType *InputType `json:"inputType"`
-	Query     *string    `json:"query"`
+	Query     string     `json:"query"`
 }
 
 type Argument struct {
-	Name      *string `json:"name"`
-	RawText   *string `json:"rawText"`
-	TextValue *string `json:"textValue"`
+	Name      string  `json:"name"`
+	RawText   string  `json:"rawText"`
+	TextValue string  `json:"textValue"`
 	Status    *Status `json:"status"`
 
-	IntValue        *string      `json:"intValue"` // Is this a bug in the spec?
-	FloatValue      float64      `json:"floatValue"`
-	BoolValue       bool         `json:"boolValue"`
-	DatetimeValue   *DateTime    `json:"datetimeValue"`
-	PlaceValue      *Location    `json:"placeValue"`
-	Extension       *interface{} `json:"extension"`
-	StructuredValue *interface{} `json:"structuredValue"`
+	IntValue        string      `json:"intValue"` // Is this a bug in the spec?
+	FloatValue      float64     `json:"floatValue"`
+	BoolValue       bool        `json:"boolValue"`
+	DatetimeValue   *DateTime   `json:"datetimeValue"`
+	PlaceValue      *Location   `json:"placeValue"`
+	Extension       interface{} `json:"extension"`
+	StructuredValue interface{} `json:"structuredValue"`
 }
 
 type Status struct {
-	Code    int          `json:"code"`
-	Message *string      `json:"message"`
-	Details *interface{} `json:"details"`
+	Code    int         `json:"code"`
+	Message string      `json:"message"`
+	Details interface{} `json:"details"`
 }
 
 type DateTime struct {

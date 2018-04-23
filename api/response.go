@@ -3,8 +3,8 @@ package api
 // https://developers.google.com/actions/reference/rest/Shared.Types/AppResponse
 
 type AppResponse struct {
-	ConversationToken  *string            `json:"conversationToken,omitempty"`
-	UserStorage        *string            `json:"userStorage,omitempty"`
+	ConversationToken  string             `json:"conversationToken,omitempty"`
+	UserStorage        string             `json:"userStorage,omitempty"`
 	ResetUserStorage   bool               `json:"resetUserStorage,omitempty"`
 	ExpectUserResponse bool               `json:"expectUserResponse"`
 	ExpectedInputs     []ExpectedInput    `json:"expectedInputs,omitempty"`
@@ -39,34 +39,34 @@ type Item struct {
 }
 
 type BasicCard struct {
-	Title               *string              `json:"title,omitempty"`
-	Subtitle            *string              `json:"subtitle,omitempty"`
-	FormattedText       *string              `json:"formattedText,omitempty"`
+	Title               string               `json:"title,omitempty"`
+	Subtitle            string               `json:"subtitle,omitempty"`
+	FormattedText       string               `json:"formattedText,omitempty"`
 	Image               *Image               `json:"image,omitempty"`
 	Buttons             []Button             `json:"buttons,omitempty"`
 	ImageDisplayOptions *ImageDisplayOptions `json:"imageDisplayOptions,omitempty"`
 }
 
 type Image struct {
-	Url               *string `json:"url,omitempty"`
-	AccessibilityText *string `json:"accessibilityText,omitempty"`
-	Height            int     `json:"height,omitempty"`
-	Width             int     `json:"width,omitempty"`
+	Url               string `json:"url,omitempty"`
+	AccessibilityText string `json:"accessibilityText,omitempty"`
+	Height            int    `json:"height,omitempty"`
+	Width             int    `json:"width,omitempty"`
 }
 
 type Button struct {
-	Title         *string        `json:"title,omitempty"`
+	Title         string         `json:"title,omitempty"`
 	OpenUrlAction *OpenUrlAction `json:"openUrlAction,omitempty"`
 }
 
 type OpenUrlAction struct {
-	Url         *string      `json:"url,omitempty"`
+	Url         string       `json:"url,omitempty"`
 	AndroidApp  *AndroidApp  `json:"androidApp,omitempty"`
 	UrlTypeHint *UrlTypeHint `json:"urlTypeHint,omitempty"`
 }
 
 type AndroidApp struct {
-	PackageName *string         `json:"packageName,omitempty"`
+	PackageName string          `json:"packageName,omitempty"`
 	Versions    []VersionFilter `json:"versions,omitempty"`
 }
 
@@ -80,18 +80,18 @@ type StructuredResponse struct {
 }
 
 type OrderUpdate struct {
-	GoogleOrderId          *string     `json:"googleOrderId,omitempty"`
-	ActionOrderId          *string     `json:"actionOrderId,omitempty"`
+	GoogleOrderId          string      `json:"googleOrderId,omitempty"`
+	ActionOrderId          string      `json:"actionOrderId,omitempty"`
 	OrderState             *OrderState `json:"orderState,omitempty"`
 	OrderManagementActions []Action    `json:"orderManagementActions,omitempty"`
 	Receipt                *Receipt    `json:"receipt,omitempty"`
-	UpdateTime             *string     `json:"updateTime,omitempty"`
+	UpdateTime             string      `json:"updateTime,omitempty"`
 	TotalPrice             *Price      `json:"totalPrice,omitempty"`
 	LineItemUpdates        *struct {
 		String *LineItemUpdate `json:"string,omitempty"`
 	} `json:"lineItemUpdates,omitempty"`
 	UserNotification *UserNotification `json:"userNotification,omitempty"`
-	InfoExtension    *interface{}      `json:"infoExtension,omitempty"`
+	InfoExtension    interface{}       `json:"infoExtension,omitempty"`
 
 	RejectionInfo    *RejectionInfo    `json:"rejectionInfo,omitempty"`
 	CancellationInfo *CancellationInfo `json:"cancellationInfo,omitempty"`
@@ -101,8 +101,8 @@ type OrderUpdate struct {
 }
 
 type OrderState struct {
-	State *string `json:"state,omitempty"`
-	Label *string `json:"label,omitempty"`
+	State string `json:"state,omitempty"`
+	Label string `json:"label,omitempty"`
 }
 
 type Action struct {
@@ -111,8 +111,8 @@ type Action struct {
 }
 
 type Receipt struct {
-	ConfirmedActionOrderId *string `json:"confirmedActionOrderId,omitempty"`
-	UserVisibleOrderId     *string `json:"userVisibleOrderId,omitempty"`
+	ConfirmedActionOrderId string `json:"confirmedActionOrderId,omitempty"`
+	UserVisibleOrderId     string `json:"userVisibleOrderId,omitempty"`
 }
 
 type Price struct {
@@ -121,42 +121,42 @@ type Price struct {
 }
 
 type Money struct {
-	CurrencyCode *string `json:"currencyCode,omitempty"`
-	Units        *string `json:"units,omitempty"`
-	Nanos        int     `json:"nanos,omitempty"`
+	CurrencyCode string `json:"currencyCode,omitempty"`
+	Units        string `json:"units,omitempty"`
+	Nanos        int    `json:"nanos,omitempty"`
 }
 
 type LineItemUpdate struct {
-	OrderState *OrderState  `json:"orderState,omitempty"`
-	Price      *Price       `json:"price,omitempty"`
-	Reason     *string      `json:"reason,omitempty"`
-	Extension  *interface{} `json:"extension,omitempty"`
+	OrderState *OrderState `json:"orderState,omitempty"`
+	Price      *Price      `json:"price,omitempty"`
+	Reason     string      `json:"reason,omitempty"`
+	Extension  interface{} `json:"extension,omitempty"`
 }
 
 type UserNotification struct {
-	Title *string `json:"title,omitempty"`
-	Text  *string `json:"text,omitempty"`
+	Title string `json:"title,omitempty"`
+	Text  string `json:"text,omitempty"`
 }
 
 type RejectionInfo struct {
 	Type   *ReasonType `json:"type,omitempty"`
-	Reason *string     `json:"reason,omitempty"`
+	Reason string      `json:"reason,omitempty"`
 }
 
 type CancellationInfo struct {
-	Reason *string `json:"reason,omitempty"`
+	Reason string `json:"reason,omitempty"`
 }
 
 type InTransitInfo struct {
-	UpdatedTime *string `json:"updatedTime,omitempty"`
+	UpdatedTime string `json:"updatedTime,omitempty"`
 }
 
 type FullfillmentInfo struct {
-	DeliveryTime *string `json:"deliveryTime,omitempty"`
+	DeliveryTime string `json:"deliveryTime,omitempty"`
 }
 
 type ReturnInfo struct {
-	Reason *string `json:"reason,omitempty"`
+	Reason string `json:"reason,omitempty"`
 }
 
 type MediaResponse struct {
@@ -165,9 +165,9 @@ type MediaResponse struct {
 }
 
 type MediaObject struct {
-	Name        *string `json:"name,omitempty"`
-	Description *string `json:"description,omitempty"`
-	ContentUrl  *string `json:"contentUrl,omitempty"`
+	Name        string `json:"name,omitempty"`
+	Description string `json:"description,omitempty"`
+	ContentUrl  string `json:"contentUrl,omitempty"`
 
 	LargeImage *Image `json:"largeImage,omitempty"`
 	Icon       *Image `json:"icon,omitempty"`
@@ -179,25 +179,25 @@ type CarouselBrowse struct {
 }
 
 type Suggestion struct {
-	Title *string `json:"title,omitempty"`
+	Title string `json:"title,omitempty"`
 }
 
 type LinkOutSuggestion struct {
-	DestinationName *string        `json:"destinationName,omitempty"`
-	Url             *string        `json:"url,omitempty"`
+	DestinationName string         `json:"destinationName,omitempty"`
+	Url             string         `json:"url,omitempty"`
 	OpenUrlAction   *OpenUrlAction `json:"openUrlAction,omitempty"`
 }
 
 type SimpleResponse struct {
-	TextToSpeech *string `json:"textToSpeech,omitempty"`
-	Ssml         *string `json:"ssml,omitempty"`
-	DisplayText  *string `json:"displayText,omitempty"`
+	TextToSpeech string `json:"textToSpeech,omitempty"`
+	Ssml         string `json:"ssml,omitempty"`
+	DisplayText  string `json:"displayText,omitempty"`
 }
 
 type ExpectedIntent struct {
-	Intent         *string      `json:"intent,omitempty"`
-	InputValueData *interface{} `json:"inputValueData,omitempty"`
-	ParameterName  *string      `json:"parameterName,omitempty"`
+	Intent         string      `json:"intent,omitempty"`
+	InputValueData interface{} `json:"inputValueData,omitempty"`
+	ParameterName  string      `json:"parameterName,omitempty"`
 }
 
 type FinalResponse struct {
@@ -212,8 +212,8 @@ type CustomPushMessage struct {
 }
 
 type Target struct {
-	UserId   *string   `json:"userId,omitempty"`
-	Intent   *string   `json:"intent,omitempty"`
+	UserId   string    `json:"userId,omitempty"`
+	Intent   string    `json:"intent,omitempty"`
 	Argument *Argument `json:"argument,omitempty"`
-	Locale   *string   `json:"locale,omitempty"`
+	Locale   string    `json:"locale,omitempty"`
 }
