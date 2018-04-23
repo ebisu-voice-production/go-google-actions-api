@@ -3,14 +3,14 @@ package api
 // https://developers.google.com/actions/reference/rest/Shared.Types/AppResponse
 
 type AppResponse struct {
-	ConversationToken  string            `json:"conversationToken"`
-	UserStorage        string            `json:"userStorage"`
-	ResetUserStorage   bool              `json:"resetUserStorage"`
-	ExpectUserResponse bool              `json:"expectUserResponse"`
-	ExpectedInputs     []ExpectedInput   `json:"expectedInputs"`
-	FinalResponse      FinalResponse     `json:"finalResponse"`
-	CustomPushMessage  CustomPushMessage `json:"customPushMessage"`
-	IsInSandbox        bool              `json:"isInSandbox"`
+	ConversationToken  string            `json:"conversationToken,omitempty"`
+	UserStorage        string            `json:"userStorage,omitempty"`
+	ResetUserStorage   bool              `json:"resetUserStorage,omitempty"`
+	ExpectUserResponse bool              `json:"expectUserResponse,omitempty"`
+	ExpectedInputs     []ExpectedInput   `json:"expectedInputs,omitempty"`
+	FinalResponse      FinalResponse     `json:"finalResponse,omitempty"`
+	CustomPushMessage  CustomPushMessage `json:"customPushMessage,omitempty"`
+	IsInSandbox        bool              `json:"isInSandbox,omitempty"`
 }
 
 type ExpectedInput struct {
