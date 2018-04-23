@@ -14,206 +14,206 @@ type AppResponse struct {
 }
 
 type ExpectedInput struct {
-	InputPrompt        InputPrompt      `json:"inputPrompt"`
-	PossibleIntents    []ExpectedIntent `json:"possibleIntents"`
-	SpeechBiasingHints []string         `json:"speechBiasingHints"`
+	InputPrompt        InputPrompt      `json:"inputPrompt,omitempty"`
+	PossibleIntents    []ExpectedIntent `json:"possibleIntents,omitempty"`
+	SpeechBiasingHints []string         `json:"speechBiasingHints,omitempty"`
 }
 
 type InputPrompt struct {
-	RichInitialPrompt RichResponse     `json:"richInitialPrompt"`
-	NoInputPrompts    []SimpleResponse `json:"noInputPrompts"`
+	RichInitialPrompt RichResponse     `json:"richInitialPrompt,omitempty"`
+	NoInputPrompts    []SimpleResponse `json:"noInputPrompts,omitempty"`
 }
 
 type RichResponse struct {
-	Items             []Item            `json:"items"`
-	Suggestions       []Suggestion      `json:"suggestions"`
-	LinkOutSuggestion LinkOutSuggestion `json:"linkOutSuggestion"`
+	Items             []Item            `json:"items,omitempty"`
+	Suggestions       []Suggestion      `json:"suggestions,omitempty"`
+	LinkOutSuggestion LinkOutSuggestion `json:"linkOutSuggestion,omitempty"`
 }
 
 type Item struct {
-	SimpleResponse     SimpleResponse     `json:"simpleResponse"`
-	BasicCard          BasicCard          `json:"basicCard"`
-	StructuredResponse StructuredResponse `json:"structuredResponse"`
-	MediaResponse      MediaResponse      `json:"mediaResponse"`
-	CarouselBrowse     CarouselBrowse     `json:"carouselBrowse"`
+	SimpleResponse     SimpleResponse     `json:"simpleResponse,omitempty"`
+	BasicCard          BasicCard          `json:"basicCard,omitempty"`
+	StructuredResponse StructuredResponse `json:"structuredResponse,omitempty"`
+	MediaResponse      MediaResponse      `json:"mediaResponse,omitempty"`
+	CarouselBrowse     CarouselBrowse     `json:"carouselBrowse,omitempty"`
 }
 
 type BasicCard struct {
-	Title               string              `json:"title"`
-	Subtitle            string              `json:"subtitle"`
-	FormattedText       string              `json:"formattedText"`
-	Image               Image               `json:"image"`
-	Buttons             []Button            `json:"buttons"`
-	ImageDisplayOptions ImageDisplayOptions `json:"imageDisplayOptions"`
+	Title               string              `json:"title,omitempty"`
+	Subtitle            string              `json:"subtitle,omitempty"`
+	FormattedText       string              `json:"formattedText,omitempty"`
+	Image               Image               `json:"image,omitempty"`
+	Buttons             []Button            `json:"buttons,omitempty"`
+	ImageDisplayOptions ImageDisplayOptions `json:"imageDisplayOptions,omitempty"`
 }
 
 type Image struct {
-	Url               string `json:"url"`
-	AccessibilityText string `json:"accessibilityText"`
-	Height            int    `json:"height"`
-	Width             int    `json:"width"`
+	Url               string `json:"url,omitempty"`
+	AccessibilityText string `json:"accessibilityText,omitempty"`
+	Height            int    `json:"height,omitempty"`
+	Width             int    `json:"width,omitempty"`
 }
 
 type Button struct {
-	Title         string        `json:"title"`
-	OpenUrlAction OpenUrlAction `json:"openUrlAction"`
+	Title         string        `json:"title,omitempty"`
+	OpenUrlAction OpenUrlAction `json:"openUrlAction,omitempty"`
 }
 
 type OpenUrlAction struct {
-	Url         string      `json:"url"`
-	AndroidApp  AndroidApp  `json:"androidApp"`
-	UrlTypeHint UrlTypeHint `json:"urlTypeHint"`
+	Url         string      `json:"url,omitempty"`
+	AndroidApp  AndroidApp  `json:"androidApp,omitempty"`
+	UrlTypeHint UrlTypeHint `json:"urlTypeHint,omitempty"`
 }
 
 type AndroidApp struct {
-	PackageName string          `json:"packageName"`
-	Versions    []VersionFilter `json:"versions"`
+	PackageName string          `json:"packageName,omitempty"`
+	Versions    []VersionFilter `json:"versions,omitempty"`
 }
 
 type VersionFilter struct {
-	MinVersion int `json:"minVersion"`
-	MaxVersion int `json:"maxVersion"`
+	MinVersion int `json:"minVersion,omitempty"`
+	MaxVersion int `json:"maxVersion,omitempty"`
 }
 
 type StructuredResponse struct {
-	OrderUpdate OrderUpdate `json:"orderUpdate"`
+	OrderUpdate OrderUpdate `json:"orderUpdate,omitempty"`
 }
 
 type OrderUpdate struct {
-	GoogleOrderId          string     `json:"googleOrderId"`
-	ActionOrderId          string     `json:"actionOrderId"`
-	OrderState             OrderState `json:"orderState"`
-	OrderManagementActions []Action   `json:"orderManagementActions"`
-	Receipt                Receipt    `json:"receipt"`
-	UpdateTime             string     `json:"updateTime"`
-	TotalPrice             Price      `json:"totalPrice"`
+	GoogleOrderId          string     `json:"googleOrderId,omitempty"`
+	ActionOrderId          string     `json:"actionOrderId,omitempty"`
+	OrderState             OrderState `json:"orderState,omitempty"`
+	OrderManagementActions []Action   `json:"orderManagementActions,omitempty"`
+	Receipt                Receipt    `json:"receipt,omitempty"`
+	UpdateTime             string     `json:"updateTime,omitempty"`
+	TotalPrice             Price      `json:"totalPrice,omitempty"`
 	LineItemUpdates        struct {
-		String LineItemUpdate `json:"string"`
-	} `json:"lineItemUpdates"`
-	UserNotification UserNotification `json:"userNotification"`
-	InfoExtension    interface{}      `json:"infoExtension"`
+		String LineItemUpdate `json:"string,omitempty"`
+	} `json:"lineItemUpdates,omitempty"`
+	UserNotification UserNotification `json:"userNotification,omitempty"`
+	InfoExtension    interface{}      `json:"infoExtension,omitempty"`
 
-	RejectionInfo    RejectionInfo    `json:"rejectionInfo"`
-	CancellationInfo CancellationInfo `json:"cancellationInfo"`
-	InTransitInfo    InTransitInfo    `json:"inTransitInfo"`
-	FullfillmentInfo FullfillmentInfo `json:"fulfillmentInfo"`
-	ReturnInfo       ReturnInfo       `json:"returnInfo"`
+	RejectionInfo    RejectionInfo    `json:"rejectionInfo,omitempty"`
+	CancellationInfo CancellationInfo `json:"cancellationInfo,omitempty"`
+	InTransitInfo    InTransitInfo    `json:"inTransitInfo,omitempty"`
+	FullfillmentInfo FullfillmentInfo `json:"fulfillmentInfo,omitempty"`
+	ReturnInfo       ReturnInfo       `json:"returnInfo,omitempty"`
 }
 
 type OrderState struct {
-	State string `json:"state"`
-	Label string `json:"label"`
+	State string `json:"state,omitempty"`
+	Label string `json:"label,omitempty"`
 }
 
 type Action struct {
-	Type   ActionType `json:"type"`
-	Button Button     `json:"button"`
+	Type   ActionType `json:"type,omitempty"`
+	Button Button     `json:"button,omitempty"`
 }
 
 type Receipt struct {
-	ConfirmedActionOrderId string `json:"confirmedActionOrderId"`
-	UserVisibleOrderId     string `json:"userVisibleOrderId"`
+	ConfirmedActionOrderId string `json:"confirmedActionOrderId,omitempty"`
+	UserVisibleOrderId     string `json:"userVisibleOrderId,omitempty"`
 }
 
 type Price struct {
-	Type   PriceType `json:"type"`
-	Amount Money     `json:"amount"`
+	Type   PriceType `json:"type,omitempty"`
+	Amount Money     `json:"amount,omitempty"`
 }
 
 type Money struct {
-	CurrencyCode string `json:"currencyCode"`
-	Units        string `json:"units"`
-	Nanos        int    `json:"nanos"`
+	CurrencyCode string `json:"currencyCode,omitempty"`
+	Units        string `json:"units,omitempty"`
+	Nanos        int    `json:"nanos,omitempty"`
 }
 
 type LineItemUpdate struct {
-	OrderState OrderState  `json:"orderState"`
-	Price      Price       `json:"price"`
-	Reason     string      `json:"reason"`
-	Extension  interface{} `json:"extension"`
+	OrderState OrderState  `json:"orderState,omitempty"`
+	Price      Price       `json:"price,omitempty"`
+	Reason     string      `json:"reason,omitempty"`
+	Extension  interface{} `json:"extension,omitempty"`
 }
 
 type UserNotification struct {
-	Title string `json:"title"`
-	Text  string `json:"text"`
+	Title string `json:"title,omitempty"`
+	Text  string `json:"text,omitempty"`
 }
 
 type RejectionInfo struct {
-	Type   ReasonType `json:"type"`
-	Reason string     `json:"reason"`
+	Type   ReasonType `json:"type,omitempty"`
+	Reason string     `json:"reason,omitempty"`
 }
 
 type CancellationInfo struct {
-	Reason string `json:"reason"`
+	Reason string `json:"reason,omitempty"`
 }
 
 type InTransitInfo struct {
-	UpdatedTime string `json:"updatedTime"`
+	UpdatedTime string `json:"updatedTime,omitempty"`
 }
 
 type FullfillmentInfo struct {
-	DeliveryTime string `json:"deliveryTime"`
+	DeliveryTime string `json:"deliveryTime,omitempty"`
 }
 
 type ReturnInfo struct {
-	Reason string `json:"reason"`
+	Reason string `json:"reason,omitempty"`
 }
 
 type MediaResponse struct {
-	MediaType    MediaType     `json:"mediaType"`
-	MediaObjects []MediaObject `json:"mediaObjects"`
+	MediaType    MediaType     `json:"mediaType,omitempty"`
+	MediaObjects []MediaObject `json:"mediaObjects,omitempty"`
 }
 
 type MediaObject struct {
-	Name        string `json:"name"`
-	Description string `json:"description"`
-	ContentUrl  string `json:"contentUrl"`
+	Name        string `json:"name,omitempty"`
+	Description string `json:"description,omitempty"`
+	ContentUrl  string `json:"contentUrl,omitempty"`
 
-	LargeImage Image `json:"largeImage"`
-	Icon       Image `json:"icon"`
+	LargeImage Image `json:"largeImage,omitempty"`
+	Icon       Image `json:"icon,omitempty"`
 }
 
 type CarouselBrowse struct {
-	Items               []Item              `json:"items"`
-	ImageDisplayOptions ImageDisplayOptions `json:"imageDisplayOptions"`
+	Items               []Item              `json:"items,omitempty"`
+	ImageDisplayOptions ImageDisplayOptions `json:"imageDisplayOptions,omitempty"`
 }
 
 type Suggestion struct {
-	Title string `json:"title"`
+	Title string `json:"title,omitempty"`
 }
 
 type LinkOutSuggestion struct {
-	DestinationName string        `json:"destinationName"`
-	Url             string        `json:"url"`
-	OpenUrlAction   OpenUrlAction `json:"openUrlAction"`
+	DestinationName string        `json:"destinationName,omitempty"`
+	Url             string        `json:"url,omitempty"`
+	OpenUrlAction   OpenUrlAction `json:"openUrlAction,omitempty"`
 }
 
 type SimpleResponse struct {
-	TextToSpeech string `json:"textToSpeech"`
-	Ssml         string `json:"ssml"`
-	DisplayText  string `json:"displayText"`
+	TextToSpeech string `json:"textToSpeech,omitempty"`
+	Ssml         string `json:"ssml,omitempty"`
+	DisplayText  string `json:"displayText,omitempty"`
 }
 
 type ExpectedIntent struct {
-	Intent         string      `json:"intent"`
-	InputValueData interface{} `json:"inputValueData"`
-	ParameterName  string      `json:"parameterName"`
+	Intent         string      `json:"intent,omitempty"`
+	InputValueData interface{} `json:"inputValueData,omitempty"`
+	ParameterName  string      `json:"parameterName,omitempty"`
 }
 
 type FinalResponse struct {
-	RichResponse RichResponse `json:"richResponse"`
+	RichResponse RichResponse `json:"richResponse,omitempty"`
 }
 
 type CustomPushMessage struct {
-	Target Target `json:"target"`
+	Target Target `json:"target,omitempty"`
 
-	OrderUpdate      OrderUpdate      `json:"orderUpdate"`
-	UserNotification UserNotification `json:"userNotification"`
+	OrderUpdate      OrderUpdate      `json:"orderUpdate,omitempty"`
+	UserNotification UserNotification `json:"userNotification,omitempty"`
 }
 
 type Target struct {
-	UserId   string   `json:"userId"`
-	Intent   string   `json:"intent"`
-	Argument Argument `json:"argument"`
-	Locale   string   `json:"locale"`
+	UserId   string   `json:"userId,omitempty"`
+	Intent   string   `json:"intent,omitempty"`
+	Argument Argument `json:"argument,omitempty"`
+	Locale   string   `json:"locale,omitempty"`
 }
