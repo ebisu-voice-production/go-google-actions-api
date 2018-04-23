@@ -48,7 +48,7 @@ var actionTypesName = map[string]ActionType{
 	"CALL":     Call,
 	"REORDER":  Reorder,
 	"REVIEW	": Review,
-	"CUSTOMER_SERVICE": CostomerSerivce,
+	"CUSTOMER_SERVICE": CustomerService,
 }
 
 func (t *ActionType) MarshalJSON() ([]byte, error) {
