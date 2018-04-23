@@ -34,7 +34,7 @@ var actionTypesId = map[ActionType]string{
 	Call:     "CALL",
 	Reorder:  "REORDER",
 	Review: "REVIEW	",
-	CostomerSerivce: "CUSTOMER_SERVICE",
+	CustomerService: "CUSTOMER_SERVICE",
 }
 
 var actionTypesName = map[string]ActionType{
