@@ -217,3 +217,42 @@ type Target struct {
 	Argument *Argument `json:"argument,omitempty"`
 	Locale   string    `json:"locale,omitempty"`
 }
+
+func (res *AppResponse) Tell(text string) {
+	res.FinalResponse = &FinalResponse{
+		RichResponse: &RichResponse{
+			Items: []Item{
+				{
+					SimpleResponse: &SimpleResponse{
+						TextToSpeech: text,
+					},
+				},
+			},
+		},
+	}
+}
+
+func (res *AppResponse) Ask(text string) {
+	res.ExpectUserResponse = true
+	res.ExpectedInputs = []ExpectedInput{
+		{
+			InputPrompt: &InputPrompt{
+				RichInitialPrompt: &RichResponse{
+
+					Items: []Item{
+						{
+							SimpleResponse: &SimpleResponse{
+								TextToSpeech: text,
+							},
+						},
+					},
+				},
+			},
+			PossibleIntents: []ExpectedIntent{
+				{
+					Intent: "actions.intent.TEXT",
+				},
+			},
+		},
+	}
+}
