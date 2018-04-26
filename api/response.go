@@ -1,5 +1,9 @@
 package api
 
+import (
+	"time"
+)
+
 // https://developers.google.com/actions/reference/rest/Shared.Types/AppResponse
 
 type AppResponse struct {
@@ -85,7 +89,7 @@ type OrderUpdate struct {
 	OrderState             *OrderState `json:"orderState,omitempty"`
 	OrderManagementActions []Action    `json:"orderManagementActions,omitempty"`
 	Receipt                *Receipt    `json:"receipt,omitempty"`
-	UpdateTime             string      `json:"updateTime,omitempty"`
+	UpdateTime             time.Time   `json:"updateTime,omitempty"`
 	TotalPrice             *Price      `json:"totalPrice,omitempty"`
 	LineItemUpdates        *struct {
 		String *LineItemUpdate `json:"string,omitempty"`
@@ -148,11 +152,11 @@ type CancellationInfo struct {
 }
 
 type InTransitInfo struct {
-	UpdatedTime string `json:"updatedTime,omitempty"`
+	UpdatedTime time.Time `json:"updatedTime,omitempty"`
 }
 
 type FullfillmentInfo struct {
-	DeliveryTime string `json:"deliveryTime,omitempty"`
+	DeliveryTime time.Time `json:"deliveryTime,omitempty"`
 }
 
 type ReturnInfo struct {

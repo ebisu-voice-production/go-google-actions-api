@@ -1,5 +1,9 @@
 package api
 
+import (
+	"time"
+)
+
 // https://developers.google.com/actions/reference/rest/Shared.Types/AppRequest
 
 type AppRequest struct {
@@ -18,7 +22,7 @@ type User struct {
 	AccessToken         string               `json:"accessToken"`
 	Permissions         []Permission         `json:"permissions"`
 	Locale              string               `json:"locale"`
-	LastSeen            string               `json:"lastSeen"`
+	LastSeen            time.Time            `json:"lastSeen"`
 	UserStorage         string               `json:"userStorage"`
 	PackageEntitlements []PackageEntitlement `json:"packageEntitlements"`
 }
