@@ -115,8 +115,7 @@ type Action struct {
 }
 
 type Receipt struct {
-	ConfirmedActionOrderId string `json:"confirmedActionOrderId,omitempty"`
-	UserVisibleOrderId     string `json:"userVisibleOrderId,omitempty"`
+	UserVisibleOrderId string `json:"userVisibleOrderId,omitempty"`
 }
 
 type Price struct {
@@ -188,7 +187,6 @@ type Suggestion struct {
 
 type LinkOutSuggestion struct {
 	DestinationName string         `json:"destinationName,omitempty"`
-	Url             string         `json:"url,omitempty"`
 	OpenUrlAction   *OpenUrlAction `json:"openUrlAction,omitempty"`
 }
 
@@ -222,7 +220,7 @@ type Target struct {
 	Locale   string    `json:"locale,omitempty"`
 }
 
-func (res *AppResponse) Tell(text string) {
+func (res *AppResponse) Tell(text string) *AppResponse {
 	res.FinalResponse = &FinalResponse{
 		RichResponse: &RichResponse{
 			Items: []Item{
@@ -234,9 +232,10 @@ func (res *AppResponse) Tell(text string) {
 			},
 		},
 	}
+	return res
 }
 
-func (res *AppResponse) Ask(text string) {
+func (res *AppResponse) Ask(text string) *AppResponse {
 	res.ExpectUserResponse = true
 	res.ExpectedInputs = []ExpectedInput{
 		{
@@ -258,9 +257,10 @@ func (res *AppResponse) Ask(text string) {
 			},
 		},
 	}
+	return res
 }
 
-func (res *AppResponse) TellSsml(ssml string) {
+func (res *AppResponse) TellSsml(ssml string) *AppResponse {
 	res.FinalResponse = &FinalResponse{
 		RichResponse: &RichResponse{
 			Items: []Item{
@@ -272,9 +272,10 @@ func (res *AppResponse) TellSsml(ssml string) {
 			},
 		},
 	}
+	return res
 }
 
-func (res *AppResponse) AskSsml(ssml string) {
+func (res *AppResponse) AskSsml(ssml string) *AppResponse {
 	res.ExpectUserResponse = true
 	res.ExpectedInputs = []ExpectedInput{
 		{
@@ -296,4 +297,25 @@ func (res *AppResponse) AskSsml(ssml string) {
 			},
 		},
 	}
+	return res
+}
+
+func (res *AppResponse) AttachLinkOut(title string, url string) *AppResponse {
+	if res.FinalResponse != nil && res.FinalResponse.RichResponse != nil {
+		res.FinalResponse.RichResponse.LinkOutSuggestion = &LinkOutSuggestion{
+			DestinationName: title,
+			OpenUrlAction: &OpenUrlAction{
+				Url: url,
+			},
+		}
+	}
+	if len(res.ExpectedInputs) > 0 && res.ExpectedInputs[0].InputPrompt != nil && res.ExpectedInputs[0].InputPrompt.RichInitialPrompt != nil {
+		res.ExpectedInputs[0].InputPrompt.RichInitialPrompt.LinkOutSuggestion = &LinkOutSuggestion{
+			DestinationName: title,
+			OpenUrlAction: &OpenUrlAction{
+				Url: url,
+			},
+		}
+	}
+	return res
 }
