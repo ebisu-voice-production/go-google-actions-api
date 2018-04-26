@@ -242,11 +242,48 @@ func (res *AppResponse) Ask(text string) {
 		{
 			InputPrompt: &InputPrompt{
 				RichInitialPrompt: &RichResponse{
-
 					Items: []Item{
 						{
 							SimpleResponse: &SimpleResponse{
 								TextToSpeech: text,
+							},
+						},
+					},
+				},
+			},
+			PossibleIntents: []ExpectedIntent{
+				{
+					Intent: "actions.intent.TEXT",
+				},
+			},
+		},
+	}
+}
+
+func (res *AppResponse) TellSsml(ssml string) {
+	res.FinalResponse = &FinalResponse{
+		RichResponse: &RichResponse{
+			Items: []Item{
+				{
+					SimpleResponse: &SimpleResponse{
+						Ssml: ssml,
+					},
+				},
+			},
+		},
+	}
+}
+
+func (res *AppResponse) AskSsml(ssml string) {
+	res.ExpectUserResponse = true
+	res.ExpectedInputs = []ExpectedInput{
+		{
+			InputPrompt: &InputPrompt{
+				RichInitialPrompt: &RichResponse{
+					Items: []Item{
+						{
+							SimpleResponse: &SimpleResponse{
+								Ssml: ssml,
 							},
 						},
 					},
