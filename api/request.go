@@ -138,14 +138,14 @@ type TimeOfDay struct {
 	Nanos   int `json:"nanos"`
 }
 
-func (req *AppRequest) getIntent0() string {
+func (req *AppRequest) GetIntent0() string {
 	if len(req.Inputs) < 1 {
 		return ""
 	}
 	return req.Inputs[0].Intent
 }
 
-func (req *AppRequest) getQuery0() string {
+func (req *AppRequest) GetQuery0() string {
 	if len(req.Inputs) < 1 {
 		return ""
 	}
