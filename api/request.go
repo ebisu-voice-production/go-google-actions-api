@@ -137,3 +137,20 @@ type TimeOfDay struct {
 	Seconds int `json:"seconds"`
 	Nanos   int `json:"nanos"`
 }
+
+func (req *AppRequest) getIntent0() string {
+	if len(req.Inputs) < 1 {
+		return ""
+	}
+	return req.Inputs[0].Intent
+}
+
+func (req *AppRequest) getQuery0() string {
+	if len(req.Inputs) < 1 {
+		return ""
+	}
+	if len(req.Inputs[0].RawInputs) < 1 {
+		return ""
+	}
+	return req.Inputs[0].RawInputs[0].Query
+}
