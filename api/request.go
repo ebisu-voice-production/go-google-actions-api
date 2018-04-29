@@ -83,7 +83,7 @@ type Surface struct {
 }
 
 type Capability struct {
-	Name string `json:"name"`
+	Name SurfaceCapability `json:"name"`
 }
 
 type Conversation struct {
