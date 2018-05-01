@@ -1,4 +1,4 @@
-package main
+package api
 
 func (req *AppRequest) GetIntent() string {
 	if len(req.Inputs) < 1 {
