@@ -1,5 +1,9 @@
 package api
 
+import (
+	"time"
+)
+
 func (req *AppRequest) GetIntent() string {
 	if len(req.Inputs) < 1 {
 		return ""
