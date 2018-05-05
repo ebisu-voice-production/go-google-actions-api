@@ -96,57 +96,50 @@ func (res *AppResponse) TellCard(title string, formatted string) *AppResponse {
 	return res
 }
 
-func (res *AppResponse) AttachCardButton(title string, url string) *AppResponse {
-	if res.FinalResponse != nil &&
-		res.FinalResponse.RichResponse != nil &&
-		len(res.FinalResponse.RichResponse.Items) >= 1 &&
-		res.FinalResponse.RichResponse.Items[0].BasicCard != nil {
-		res.FinalResponse.RichResponse.Items[0].BasicCard.Buttons = []Button{
-			{
-				Title: title,
-				OpenUrlAction: &OpenUrlAction{
-					Url: url,
+func (res *AppResponse) AttachCardButton(title string, formatted string, label string, url string) *AppResponse {
+	item := Item{
+		BasicCard: &BasicCard{
+			Title:         title,
+			FormattedText: formatted,
+			Buttons: []Button{
+				{
+					Title: label,
+					OpenUrlAction: &OpenUrlAction{
+						Url: url,
+					},
 				},
 			},
-		}
+		},
+	}
+	if res.FinalResponse != nil &&
+		res.FinalResponse.RichResponse != nil &&
+		len(res.FinalResponse.RichResponse.Items) >= 1 {
+		res.FinalResponse.RichResponse.Items = append(res.FinalResponse.RichResponse.Items, item)
 	}
 	if len(res.ExpectedInputs) > 0 &&
 		res.ExpectedInputs[0].InputPrompt != nil &&
 		res.ExpectedInputs[0].InputPrompt.RichInitialPrompt != nil &&
-		len(res.ExpectedInputs[0].InputPrompt.RichInitialPrompt.Items) >= 1 &&
-		res.ExpectedInputs[0].InputPrompt.RichInitialPrompt.Items[0].BasicCard != nil {
-		res.ExpectedInputs[0].InputPrompt.RichInitialPrompt.Items[0].BasicCard.Buttons = []Button{
-
-			{
-				Title: title,
-				OpenUrlAction: &OpenUrlAction{
-					Url: url,
-				},
-			},
-		}
+		len(res.ExpectedInputs[0].InputPrompt.RichInitialPrompt.Items) >= 1 {
+		res.ExpectedInputs[0].InputPrompt.RichInitialPrompt.Items = append(res.ExpectedInputs[0].InputPrompt.RichInitialPrompt.Items, item)
 	}
 	return res
 }
 
 func (res *AppResponse) AttachLinkOut(title string, url string) *AppResponse {
+	linkOut := LinkOutSuggestion{
+		DestinationName: title,
+		OpenUrlAction: &OpenUrlAction{
+			Url: url,
+		},
+	}
 	if res.FinalResponse != nil &&
 		res.FinalResponse.RichResponse != nil {
-		res.FinalResponse.RichResponse.LinkOutSuggestion = &LinkOutSuggestion{
-			DestinationName: title,
-			OpenUrlAction: &OpenUrlAction{
-				Url: url,
-			},
-		}
+		res.FinalResponse.RichResponse.LinkOutSuggestion = &linkOut
 	}
 	if len(res.ExpectedInputs) > 0 &&
 		res.ExpectedInputs[0].InputPrompt != nil &&
 		res.ExpectedInputs[0].InputPrompt.RichInitialPrompt != nil {
-		res.ExpectedInputs[0].InputPrompt.RichInitialPrompt.LinkOutSuggestion = &LinkOutSuggestion{
-			DestinationName: title,
-			OpenUrlAction: &OpenUrlAction{
-				Url: url,
-			},
-		}
+		res.ExpectedInputs[0].InputPrompt.RichInitialPrompt.LinkOutSuggestion = &linkOut
 	}
 	return res
 }
