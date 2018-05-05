@@ -80,22 +80,6 @@ func (res *AppResponse) AskSsml(ssml string) *AppResponse {
 	return res
 }
 
-func (res *AppResponse) TellCard(title string, formatted string) *AppResponse {
-	res.FinalResponse = &FinalResponse{
-		RichResponse: &RichResponse{
-			Items: []Item{
-				{
-					BasicCard: &BasicCard{
-						Title:         title,
-						FormattedText: formatted,
-					},
-				},
-			},
-		},
-	}
-	return res
-}
-
 func (res *AppResponse) AttachCardButton(title string, formatted string, label string, url string) *AppResponse {
 	item := Item{
 		BasicCard: &BasicCard{
