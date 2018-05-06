@@ -27,3 +27,15 @@ func (req *AppRequest) GetLastSeen() time.Time {
 	}
 	return req.User.LastSeen
 }
+
+func (req *AppRequest) GetArgument(name string) string {
+	if len(req.Inputs) < 1 {
+		return ""
+	}
+	for _, x := range req.Inputs[0].Arguments {
+		if x.Name == name {
+			return x.RawText
+		}
+	}
+	return ""
+}
