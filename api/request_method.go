@@ -60,3 +60,15 @@ func (req *AppRequest) GetConversationToken() string {
 	}
 	return req.Conversation.ConversationToken
 }
+
+func (req *AppRequest) HasSurfaceScreenOutput() bool {
+	if req.Surface == nil {
+		return false
+	}
+	for _, capability := range req.Surface.Capabilities {
+		if capability.Name == CapabilityScreenOutput {
+			return true
+		}
+	}
+	return false
+}
