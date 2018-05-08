@@ -35,6 +35,13 @@ func (req *AppRequest) GetLastSeen() time.Time {
 	return req.User.LastSeen
 }
 
+func (req *AppRequest) GetUserStorage() string {
+	if req.User == nil {
+		return ""
+	}
+	return req.User.UserStorage
+}
+
 func (req *AppRequest) GetArgument(name string) string {
 	if len(req.Inputs) < 1 {
 		return ""
