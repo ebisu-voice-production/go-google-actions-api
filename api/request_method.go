@@ -21,6 +21,13 @@ func (req *AppRequest) GetQuery() string {
 	return req.Inputs[0].RawInputs[0].Query
 }
 
+func (req *AppRequest) GetUserId() string {
+	if req.User == nil {
+		return ""
+	}
+	return req.User.UserId
+}
+
 func (req *AppRequest) GetLastSeen() time.Time {
 	if req.User == nil {
 		return time.Time{}
