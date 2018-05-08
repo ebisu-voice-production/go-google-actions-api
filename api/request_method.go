@@ -46,3 +46,10 @@ func (req *AppRequest) GetArgument(name string) string {
 	}
 	return ""
 }
+
+func (req *AppRequest) GetConversationToken() string {
+	if req.Conversation == nil {
+		return ""
+	}
+	return req.Conversation.ConversationToken
+}
