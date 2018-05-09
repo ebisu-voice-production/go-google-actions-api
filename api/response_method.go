@@ -127,3 +127,36 @@ func (res *AppResponse) AttachLinkOut(title string, url string) *AppResponse {
 	}
 	return res
 }
+
+func (res *AppResponse) AskForScreenOut(context string, notification string) *AppResponse {
+	res.ExpectUserResponse = true
+	res.ExpectedInputs = []ExpectedInput{
+		{
+			InputPrompt: &InputPrompt{
+				RichInitialPrompt: &RichResponse{
+					Items: []Item{
+						{
+							SimpleResponse: &SimpleResponse{
+								TextToSpeech: "PLACEHOLDER_FOR_NEW_SURFACE",
+							},
+						},
+					},
+				},
+			},
+			PossibleIntents: []ExpectedIntent{
+				{
+					Intent: "actions.intent.NEW_SURFACE",
+					InputValueData: InputValueDataForNewSurface{
+						Type:              "type.googleapis.com/google.actions.v2.NewSurfaceValueSpec",
+						Context:           context,
+						NotificationTitle: notification,
+						Capabilities: []SurfaceCapability{
+							CapabilityScreenOutput,
+						},
+					},
+				},
+			},
+		},
+	}
+	return res
+}

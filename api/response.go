@@ -219,3 +219,10 @@ type Target struct {
 	Argument *Argument `json:"argument,omitempty"`
 	Locale   string    `json:"locale,omitempty"`
 }
+
+type InputValueDataForNewSurface struct {
+	Type              string              `json:"@type,omitempty"`
+	Context           string              `json:"context,omitempty"`
+	NotificationTitle string              `json:"notificationTitle,omitempty"`
+	Capabilities      []SurfaceCapability `json:"capabilities,omitempty"`
+}
