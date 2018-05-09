@@ -72,3 +72,14 @@ func (req *AppRequest) HasSurfaceScreenOutput() bool {
 	}
 	return false
 }
+
+func (req *AppRequest) HasAvailableSurfaceScreenOutput() bool {
+	for _, surface := range req.AvailableSurfaces {
+		for _, capability := range surface.Capabilities {
+			if capability.Name == CapabilityScreenOutput {
+				return true
+			}
+		}
+	}
+	return false
+}
