@@ -1,16 +1,32 @@
 package api
 
-func (res *AppResponse) Tell(text string) *AppResponse {
-	res.FinalResponse = &FinalResponse{
-		RichResponse: &RichResponse{
-			Items: []Item{
-				{
-					SimpleResponse: &SimpleResponse{
-						TextToSpeech: text,
-					},
-				},
+func buildSimpleResponse(text string, ssml string) *SimpleResponse {
+	var simpleResponse SimpleResponse
+	if ssml != "" {
+		simpleResponse.Ssml = ssml
+		if text != "" {
+			simpleResponse.DisplayText = text
+		}
+	} else {
+		simpleResponse.TextToSpeech = text
+	}
+	return &simpleResponse
+}
+
+func buildRichResponse(text string, ssml string) *RichResponse {
+	richResponse := RichResponse{
+		Items: []Item{
+			{
+				SimpleResponse: buildSimpleResponse(text, ssml),
 			},
 		},
+	}
+	return &richResponse
+}
+
+func (res *AppResponse) Tell(text string) *AppResponse {
+	res.FinalResponse = &FinalResponse{
+		RichResponse: buildRichResponse(text, ""),
 	}
 	return res
 }
@@ -20,15 +36,7 @@ func (res *AppResponse) Ask(text string) *AppResponse {
 	res.ExpectedInputs = []ExpectedInput{
 		{
 			InputPrompt: &InputPrompt{
-				RichInitialPrompt: &RichResponse{
-					Items: []Item{
-						{
-							SimpleResponse: &SimpleResponse{
-								TextToSpeech: text,
-							},
-						},
-					},
-				},
+				RichInitialPrompt: buildRichResponse(text, ""),
 			},
 			PossibleIntents: []ExpectedIntent{
 				{
@@ -42,15 +50,7 @@ func (res *AppResponse) Ask(text string) *AppResponse {
 
 func (res *AppResponse) TellSsml(ssml string) *AppResponse {
 	res.FinalResponse = &FinalResponse{
-		RichResponse: &RichResponse{
-			Items: []Item{
-				{
-					SimpleResponse: &SimpleResponse{
-						Ssml: ssml,
-					},
-				},
-			},
-		},
+		RichResponse: buildRichResponse("", ssml),
 	}
 	return res
 }
@@ -60,15 +60,7 @@ func (res *AppResponse) AskSsml(ssml string) *AppResponse {
 	res.ExpectedInputs = []ExpectedInput{
 		{
 			InputPrompt: &InputPrompt{
-				RichInitialPrompt: &RichResponse{
-					Items: []Item{
-						{
-							SimpleResponse: &SimpleResponse{
-								Ssml: ssml,
-							},
-						},
-					},
-				},
+				RichInitialPrompt: buildRichResponse("", ssml),
 			},
 			PossibleIntents: []ExpectedIntent{
 				{
@@ -80,7 +72,24 @@ func (res *AppResponse) AskSsml(ssml string) *AppResponse {
 	return res
 }
 
+func findRichResponse(res *AppResponse) *RichResponse {
+	if res.FinalResponse != nil &&
+		res.FinalResponse.RichResponse != nil {
+		return res.FinalResponse.RichResponse
+	}
+	if len(res.ExpectedInputs) > 0 &&
+		res.ExpectedInputs[0].InputPrompt != nil &&
+		res.ExpectedInputs[0].InputPrompt.RichInitialPrompt != nil {
+		return res.ExpectedInputs[0].InputPrompt.RichInitialPrompt
+	}
+	return nil
+}
+
 func (res *AppResponse) AttachCardButton(title string, formatted string, label string, url string) *AppResponse {
+	richResponse := findRichResponse(res)
+	if richResponse == nil {
+		return res
+	}
 	item := Item{
 		BasicCard: &BasicCard{
 			Title:         title,
@@ -95,65 +104,46 @@ func (res *AppResponse) AttachCardButton(title string, formatted string, label s
 			},
 		},
 	}
-	if res.FinalResponse != nil &&
-		res.FinalResponse.RichResponse != nil &&
-		len(res.FinalResponse.RichResponse.Items) >= 1 {
-		res.FinalResponse.RichResponse.Items = append(res.FinalResponse.RichResponse.Items, item)
-	}
-	if len(res.ExpectedInputs) > 0 &&
-		res.ExpectedInputs[0].InputPrompt != nil &&
-		res.ExpectedInputs[0].InputPrompt.RichInitialPrompt != nil &&
-		len(res.ExpectedInputs[0].InputPrompt.RichInitialPrompt.Items) >= 1 {
-		res.ExpectedInputs[0].InputPrompt.RichInitialPrompt.Items = append(res.ExpectedInputs[0].InputPrompt.RichInitialPrompt.Items, item)
+	if len(richResponse.Items) >= 1 {
+		richResponse.Items = append(richResponse.Items, item)
 	}
 	return res
 }
 
 func (res *AppResponse) AttachLinkOut(title string, url string) *AppResponse {
+	richResponse := findRichResponse(res)
+	if richResponse == nil {
+		return res
+	}
 	linkOut := LinkOutSuggestion{
 		DestinationName: title,
 		OpenUrlAction: &OpenUrlAction{
 			Url: url,
 		},
 	}
-	if res.FinalResponse != nil &&
-		res.FinalResponse.RichResponse != nil {
-		res.FinalResponse.RichResponse.LinkOutSuggestion = &linkOut
-	}
-	if len(res.ExpectedInputs) > 0 &&
-		res.ExpectedInputs[0].InputPrompt != nil &&
-		res.ExpectedInputs[0].InputPrompt.RichInitialPrompt != nil {
-		res.ExpectedInputs[0].InputPrompt.RichInitialPrompt.LinkOutSuggestion = &linkOut
-	}
+	richResponse.LinkOutSuggestion = &linkOut
 	return res
 }
 
 func (res *AppResponse) AskForScreenOut(context string, notification string) *AppResponse {
+	inputValueData := InputValueDataForNewSurface{
+		Type:              "type.googleapis.com/google.actions.v2.NewSurfaceValueSpec",
+		Context:           context,
+		NotificationTitle: notification,
+		Capabilities: []SurfaceCapability{
+			CapabilityScreenOutput,
+		},
+	}
 	res.ExpectUserResponse = true
 	res.ExpectedInputs = []ExpectedInput{
 		{
 			InputPrompt: &InputPrompt{
-				RichInitialPrompt: &RichResponse{
-					Items: []Item{
-						{
-							SimpleResponse: &SimpleResponse{
-								TextToSpeech: "PLACEHOLDER_FOR_NEW_SURFACE",
-							},
-						},
-					},
-				},
+				RichInitialPrompt: buildRichResponse("PLACEHOLDER_FOR_NEW_SURFACE", ""),
 			},
 			PossibleIntents: []ExpectedIntent{
 				{
-					Intent: "actions.intent.NEW_SURFACE",
-					InputValueData: InputValueDataForNewSurface{
-						Type:              "type.googleapis.com/google.actions.v2.NewSurfaceValueSpec",
-						Context:           context,
-						NotificationTitle: notification,
-						Capabilities: []SurfaceCapability{
-							CapabilityScreenOutput,
-						},
-					},
+					Intent:         "actions.intent.NEW_SURFACE",
+					InputValueData: inputValueData,
 				},
 			},
 		},
