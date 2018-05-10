@@ -61,25 +61,41 @@ func (req *AppRequest) GetConversationToken() string {
 	return req.Conversation.ConversationToken
 }
 
-func (req *AppRequest) HasSurfaceScreenOutput() bool {
+func (req *AppRequest) hasSurfaceCapability(surfaceCapability SurfaceCapability) bool {
 	if req.Surface == nil {
 		return false
 	}
 	for _, capability := range req.Surface.Capabilities {
-		if capability.Name == CapabilityScreenOutput {
+		if capability.Name == surfaceCapability {
 			return true
 		}
 	}
 	return false
 }
 
-func (req *AppRequest) HasAvailableSurfaceScreenOutput() bool {
+func (req *AppRequest) hasAvailableSurfaceCapability(surfaceCapability SurfaceCapability) bool {
 	for _, surface := range req.AvailableSurfaces {
 		for _, capability := range surface.Capabilities {
-			if capability.Name == CapabilityScreenOutput {
+			if capability.Name == surfaceCapability {
 				return true
 			}
 		}
 	}
 	return false
+}
+
+func (req *AppRequest) HasSurfaceScreenOutput() bool {
+	return req.hasSurfaceCapability(CapabilityScreenOutput)
+}
+
+func (req *AppRequest) HasAvailableSurfaceScreenOutput() bool {
+	return req.hasAvailableSurfaceCapability(CapabilityScreenOutput)
+}
+
+func (req *AppRequest) HasSurfaceWebBrowser() bool {
+	return req.hasSurfaceCapability(CapabilityWebBrowser)
+}
+
+func (req *AppRequest) HasAvailableSurfaceWebBrowser() bool {
+	return req.hasAvailableSurfaceCapability(CapabilityWebBrowser)
 }

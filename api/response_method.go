@@ -125,14 +125,12 @@ func (res *AppResponse) AttachLinkOut(title string, url string) *AppResponse {
 	return res
 }
 
-func (res *AppResponse) AskForScreenOut(context string, notification string) *AppResponse {
+func (res *AppResponse) askForNewSurface(context string, notification string, surfaceCapability SurfaceCapability) *AppResponse {
 	inputValueData := InputValueDataForNewSurface{
 		Type:              "type.googleapis.com/google.actions.v2.NewSurfaceValueSpec",
 		Context:           context,
 		NotificationTitle: notification,
-		Capabilities: []SurfaceCapability{
-			CapabilityScreenOutput,
-		},
+		Capabilities:      []SurfaceCapability{surfaceCapability},
 	}
 	res.ExpectUserResponse = true
 	res.ExpectedInputs = []ExpectedInput{
@@ -149,4 +147,12 @@ func (res *AppResponse) AskForScreenOut(context string, notification string) *Ap
 		},
 	}
 	return res
+}
+
+func (res *AppResponse) AskForScreenOutput(context string, notification string) *AppResponse {
+	return res.askForNewSurface(context, notification, CapabilityScreenOutput)
+}
+
+func (res *AppResponse) AskForWebBrowser(context string, notification string) *AppResponse {
+	return res.askForNewSurface(context, notification, CapabilityWebBrowser)
 }
