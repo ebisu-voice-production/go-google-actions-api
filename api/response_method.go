@@ -125,6 +125,23 @@ func (res *AppResponse) AttachLinkOut(title string, url string) *AppResponse {
 	return res
 }
 
+func (res *AppResponse) AskForSignIn() *AppResponse {
+	res.ExpectUserResponse = true
+	res.ExpectedInputs = []ExpectedInput{
+		{
+			InputPrompt: &InputPrompt{
+				RichInitialPrompt: buildRichResponse("PLACEHOLDER_FOR_SIGN_IN", ""),
+			},
+			PossibleIntents: []ExpectedIntent{
+				{
+					Intent: "actions.intent.SIGN_IN",
+				},
+			},
+		},
+	}
+	return res
+}
+
 func (res *AppResponse) askForNewSurface(context string, notification string, surfaceCapability SurfaceCapability) *AppResponse {
 	inputValueData := InputValueDataForNewSurface{
 		Type:              "type.googleapis.com/google.actions.v2.NewSurfaceValueSpec",
