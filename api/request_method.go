@@ -28,6 +28,13 @@ func (req *AppRequest) GetUserId() string {
 	return req.User.UserId
 }
 
+func (req *AppRequest) GetAccessToken() string {
+	if req.User == nil {
+		return ""
+	}
+	return req.User.AccessToken
+}
+
 func (req *AppRequest) GetLastSeen() time.Time {
 	if req.User == nil {
 		return time.Time{}
