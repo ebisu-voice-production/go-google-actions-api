@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"reflect"
 
 	"golang.org/x/net/context"
 	"google.golang.org/appengine"
@@ -12,65 +13,69 @@ import (
 	"github.com/ebisu-voice-production/go-google-actions-api/api"
 )
 
-type AppContext interface {
-	GetConversationToken() interface{}
-	GetUserStorage() interface{}
-	HandleApp(ctx context.Context, req *api.AppRequest, res *api.AppResponse)
-}
-
 type GaeHandler struct {
-	MakeAppContext func() AppContext
+	// UnmarshalConversationToken([]byte) (*ConversationToken, error)
+	UnmarshalConversationToken interface{}
+	// MarshalConversationToken(*ConversationToken) ([]byte, error)
+	MarshalConversationToken interface{}
+	// UnmarshalUserStorage([]byte) (*UserStorage, error)
+	UnmarshalUserStorage interface{}
+	// MarshalUserStorage(*UserStorage) ([]byte, error)
+	MarshalUserStorage interface{}
+	// HandleApp(ctx context.Context, req *api.AppRequest, res *api.AppResponse, token *ConversationToken, storage *UserStorage)
+	HandleApp interface{}
 }
 
-func (g *GaeHandler) getConversationToken(ctx context.Context, appCtx AppContext, req *api.AppRequest) {
-	x := appCtx.GetConversationToken()
-	if x == nil {
-		return
+func (g *GaeHandler) getConversationToken(ctx context.Context, req *api.AppRequest) reflect.Value {
+	if g.UnmarshalConversationToken == nil {
+		return reflect.ValueOf(nil)
 	}
-	err := json.Unmarshal([]byte(req.GetConversationToken()), x)
-	if err != nil {
-		log.Warningf(ctx, "faild to get conversationToken: %v", err)
+	f := reflect.ValueOf(g.UnmarshalConversationToken)
+	arg1 := reflect.ValueOf([]byte(req.GetConversationToken()))
+	vs := f.Call([]reflect.Value{arg1})
+	if !vs[1].IsNil() {
+		log.Warningf(ctx, "faild to get conversationToken: %v", vs[1])
 	}
+	return vs[0]
 }
 
-func (g *GaeHandler) setConversationToken(ctx context.Context, appCtx AppContext, req *api.AppRequest, res *api.AppResponse) {
-	x := appCtx.GetConversationToken()
-	if x == nil {
+func (g *GaeHandler) setConversationToken(ctx context.Context, req *api.AppRequest, res *api.AppResponse, v reflect.Value) {
+	if g.MarshalConversationToken == nil {
 		return
 	}
-	b, err := json.Marshal(x)
-	if err != nil {
-		log.Warningf(ctx, "faild to set conversationToken: %v", err)
+	f := reflect.ValueOf(g.MarshalConversationToken)
+	vs := f.Call([]reflect.Value{v})
+	if !vs[1].IsNil() {
+		log.Warningf(ctx, "faild to set conversationToken: %v", vs[1])
 		return
 	}
-	res.ConversationToken = string(b)
+	res.ConversationToken = string(vs[0].Bytes())
 }
 
-func (g *GaeHandler) getUserStorage(ctx context.Context, appCtx AppContext, req *api.AppRequest) {
-	x := appCtx.GetUserStorage()
-	if x == nil {
-		return
+func (g *GaeHandler) getUserStorage(ctx context.Context, req *api.AppRequest) reflect.Value {
+	if g.UnmarshalUserStorage == nil {
+		return reflect.ValueOf(nil)
 	}
-	err := json.Unmarshal([]byte(req.GetUserStorage()), x)
-	if err != nil {
-		log.Warningf(ctx, "faild to parse userStorage: %v", err)
+	f := reflect.ValueOf(g.UnmarshalUserStorage)
+	arg1 := reflect.ValueOf([]byte(req.GetUserStorage()))
+	vs := f.Call([]reflect.Value{arg1})
+	if !vs[1].IsNil() {
+		log.Warningf(ctx, "faild to get conversationToken: %v", vs[1])
 	}
+	return vs[0]
 }
 
-func (g *GaeHandler) setUserStorage(ctx context.Context, appCtx AppContext, req *api.AppRequest, res *api.AppResponse) {
-	x := appCtx.GetUserStorage()
-	if x == nil {
+func (g *GaeHandler) setUserStorage(ctx context.Context, req *api.AppRequest, res *api.AppResponse, v reflect.Value) {
+	if g.MarshalUserStorage == nil {
 		return
 	}
-	b, err := json.Marshal(x)
-	if err != nil {
-		log.Warningf(ctx, "faild to set userStorage: %v", err)
+	f := reflect.ValueOf(g.MarshalUserStorage)
+	vs := f.Call([]reflect.Value{v})
+	if !vs[1].IsNil() {
+		log.Warningf(ctx, "faild to set conversationToken: %v", vs[1])
 		return
 	}
-	newUserStorage := string(b)
-	if req.GetUserStorage() != newUserStorage {
-		res.UserStorage = newUserStorage
-	}
+	res.UserStorage = string(vs[0].Bytes())
 }
 
 func (g *GaeHandler) HandleRequest(w http.ResponseWriter, r *http.Request) {
@@ -89,12 +94,15 @@ func (g *GaeHandler) HandleRequest(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var res api.AppResponse
-	appCtx := g.MakeAppContext()
-	g.getConversationToken(ctx, appCtx, &req)
-	g.getUserStorage(ctx, appCtx, &req)
-	appCtx.HandleApp(ctx, &req, &res)
-	g.setConversationToken(ctx, appCtx, &req, &res)
-	g.setUserStorage(ctx, appCtx, &req, &res)
+	token := g.getConversationToken(ctx, &req)
+	storage := g.getUserStorage(ctx, &req)
+	f := reflect.ValueOf(g.HandleApp)
+	arg1 := reflect.ValueOf(ctx)
+	arg2 := reflect.ValueOf(&req)
+	arg3 := reflect.ValueOf(&res)
+	f.Call([]reflect.Value{arg1, arg2, arg3, token, storage})
+	g.setConversationToken(ctx, &req, &res, token)
+	g.setUserStorage(ctx, &req, &res, storage)
 	js, err := json.Marshal(res)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
