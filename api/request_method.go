@@ -49,16 +49,40 @@ func (req *AppRequest) GetUserStorage() string {
 	return req.User.UserStorage
 }
 
-func (req *AppRequest) GetArgument(name string) string {
+func (req *AppRequest) pickFirstArgument(name string) *Argument {
 	if len(req.Inputs) < 1 {
-		return ""
+		return nil
 	}
 	for _, x := range req.Inputs[0].Arguments {
 		if x.Name == name {
-			return x.RawText
+			return &x
 		}
 	}
-	return ""
+	return nil
+}
+
+func (req *AppRequest) GetArgument(name string) string {
+	argument := req.pickFirstArgument(name)
+	if argument == nil {
+		return ""
+	}
+	return argument.RawText
+}
+
+func (req *AppRequest) GetArgumentTextValue(name string) string {
+	argument := req.pickFirstArgument(name)
+	if argument == nil {
+		return ""
+	}
+	return argument.TextValue
+}
+
+func (req *AppRequest) GetArgumentBoolValue(name string) bool {
+	argument := req.pickFirstArgument(name)
+	if argument == nil {
+		return false
+	}
+	return argument.BoolValue
 }
 
 func (req *AppRequest) GetConversationToken() string {
