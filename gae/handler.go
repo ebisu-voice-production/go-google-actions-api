@@ -27,7 +27,7 @@ func (g *GaeHandler) getConversationToken(ctx context.Context, appCtx AppContext
 	if x == nil {
 		return
 	}
-	err := json.Unmarshal([]byte(req.GetConversationToken()), &x)
+	err := json.Unmarshal([]byte(req.GetConversationToken()), x)
 	if err != nil {
 		log.Warningf(ctx, "faild to get conversationToken: %v", err)
 	}
@@ -51,7 +51,7 @@ func (g *GaeHandler) getUserStorage(ctx context.Context, appCtx AppContext, req 
 	if x == nil {
 		return
 	}
-	err := json.Unmarshal([]byte(req.GetUserStorage()), &x)
+	err := json.Unmarshal([]byte(req.GetUserStorage()), x)
 	if err != nil {
 		log.Warningf(ctx, "faild to parse userStorage: %v", err)
 	}
