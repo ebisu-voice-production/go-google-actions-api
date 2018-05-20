@@ -220,6 +220,13 @@ type Target struct {
 	Locale   string    `json:"locale,omitempty"`
 }
 
+type InputValueDataForConfirmation struct {
+	Type       string `json:"@type,omitempty"`
+	DialogSpec struct {
+		RequestConfirmationText string `json:"requestConfirmationText,omitempty"`
+	} `json:"dialogSpec,omitempty"`
+}
+
 type InputValueDataForNewSurface struct {
 	Type              string              `json:"@type,omitempty"`
 	Context           string              `json:"context,omitempty"`

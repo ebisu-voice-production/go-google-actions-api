@@ -125,6 +125,28 @@ func (res *AppResponse) AttachLinkOut(title string, url string) *AppResponse {
 	return res
 }
 
+func (res *AppResponse) AskForConfirmation(text string) *AppResponse {
+	inputValueData := InputValueDataForConfirmation{
+		Type: "type.googleapis.com/google.actions.v2.ConfirmationValueSpec",
+	}
+	inputValueData.DialogSpec.RequestConfirmationText = text
+	res.ExpectUserResponse = true
+	res.ExpectedInputs = []ExpectedInput{
+		{
+			InputPrompt: &InputPrompt{
+				RichInitialPrompt: buildRichResponse("PLACEHOLDER_FOR_CONFIRMATION", ""),
+			},
+			PossibleIntents: []ExpectedIntent{
+				{
+					Intent:         "actions.intent.CONFIRMATION",
+					InputValueData: inputValueData,
+				},
+			},
+		},
+	}
+	return res
+}
+
 func (res *AppResponse) AskForSignIn() *AppResponse {
 	res.ExpectUserResponse = true
 	res.ExpectedInputs = []ExpectedInput{
