@@ -28,7 +28,8 @@ type GaeHandler struct {
 
 func (g *GaeHandler) getConversationToken(ctx context.Context, req *api.AppRequest) reflect.Value {
 	if g.UnmarshalConversationToken == nil {
-		return reflect.ValueOf(nil)
+		var zero interface{}
+		return reflect.ValueOf(zero)
 	}
 	f := reflect.ValueOf(g.UnmarshalConversationToken)
 	arg1 := reflect.ValueOf([]byte(req.GetConversationToken()))
@@ -54,7 +55,8 @@ func (g *GaeHandler) setConversationToken(ctx context.Context, req *api.AppReque
 
 func (g *GaeHandler) getUserStorage(ctx context.Context, req *api.AppRequest) reflect.Value {
 	if g.UnmarshalUserStorage == nil {
-		return reflect.ValueOf(nil)
+		var zero interface{}
+		return reflect.ValueOf(zero)
 	}
 	f := reflect.ValueOf(g.UnmarshalUserStorage)
 	arg1 := reflect.ValueOf([]byte(req.GetUserStorage()))
