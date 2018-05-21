@@ -26,14 +26,13 @@ type GaeHandler struct {
 	HandleApp interface{}
 }
 
-func (g *GaeHandler) getConversationToken(ctx context.Context, req *api.AppRequest) reflect.Value {
+func (g *GaeHandler) getConversationToken(ctx context.Context, req *api.AppRequest, t reflect.Type) reflect.Value {
 	if g.UnmarshalConversationToken == nil {
-		var empty interface{}
-		return reflect.Zero(reflect.TypeOf(empty))
+		return reflect.Zero(t)
 	}
 	f := reflect.ValueOf(g.UnmarshalConversationToken)
-	arg1 := reflect.ValueOf([]byte(req.GetConversationToken()))
-	vs := f.Call([]reflect.Value{arg1})
+	arg0 := reflect.ValueOf([]byte(req.GetConversationToken()))
+	vs := f.Call([]reflect.Value{arg0})
 	if !vs[1].IsNil() {
 		log.Warningf(ctx, "faild to get conversationToken: %v", vs[1])
 	}
@@ -53,14 +52,13 @@ func (g *GaeHandler) setConversationToken(ctx context.Context, req *api.AppReque
 	res.ConversationToken = string(vs[0].Bytes())
 }
 
-func (g *GaeHandler) getUserStorage(ctx context.Context, req *api.AppRequest) reflect.Value {
+func (g *GaeHandler) getUserStorage(ctx context.Context, req *api.AppRequest, t reflect.Type) reflect.Value {
 	if g.UnmarshalUserStorage == nil {
-		var empty interface{}
-		return reflect.Zero(reflect.TypeOf(empty))
+		return reflect.Zero(t)
 	}
 	f := reflect.ValueOf(g.UnmarshalUserStorage)
-	arg1 := reflect.ValueOf([]byte(req.GetUserStorage()))
-	vs := f.Call([]reflect.Value{arg1})
+	arg0 := reflect.ValueOf([]byte(req.GetUserStorage()))
+	vs := f.Call([]reflect.Value{arg0})
 	if !vs[1].IsNil() {
 		log.Warningf(ctx, "faild to get conversationToken: %v", vs[1])
 	}
@@ -96,13 +94,15 @@ func (g *GaeHandler) HandleRequest(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var res api.AppResponse
-	token := g.getConversationToken(ctx, &req)
-	storage := g.getUserStorage(ctx, &req)
 	f := reflect.ValueOf(g.HandleApp)
-	arg1 := reflect.ValueOf(ctx)
-	arg2 := reflect.ValueOf(&req)
-	arg3 := reflect.ValueOf(&res)
-	f.Call([]reflect.Value{arg1, arg2, arg3, token, storage})
+	tokenType := f.Type().In(3)
+	storageType := f.Type().In(4)
+	token := g.getConversationToken(ctx, &req, tokenType)
+	storage := g.getUserStorage(ctx, &req, storageType)
+	arg0 := reflect.ValueOf(ctx)
+	arg1 := reflect.ValueOf(&req)
+	arg2 := reflect.ValueOf(&res)
+	f.Call([]reflect.Value{arg0, arg1, arg2, token, storage})
 	g.setConversationToken(ctx, &req, &res, token)
 	g.setUserStorage(ctx, &req, &res, storage)
 	js, err := json.Marshal(res)
