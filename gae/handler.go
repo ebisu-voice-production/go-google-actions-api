@@ -31,9 +31,10 @@ func (a *AppHandler) getConversationToken(ctx context.Context, req *api.AppReque
 		return reflect.Zero(t)
 	}
 	f := reflect.ValueOf(a.UnmarshalConversationToken)
-	arg0 := reflect.ValueOf([]byte(req.GetConversationToken()))
+	str := req.GetConversationToken()
+	arg0 := reflect.ValueOf([]byte(str))
 	vs := f.Call([]reflect.Value{arg0})
-	if !vs[1].IsNil() {
+	if str != "" && !vs[1].IsNil() {
 		log.Warningf(ctx, "faild to get conversationToken: %v", vs[1])
 	}
 	return vs[0]
@@ -57,9 +58,10 @@ func (a *AppHandler) getUserStorage(ctx context.Context, req *api.AppRequest, t 
 		return reflect.Zero(t)
 	}
 	f := reflect.ValueOf(a.UnmarshalUserStorage)
-	arg0 := reflect.ValueOf([]byte(req.GetUserStorage()))
+	str := req.GetUserStorage()
+	arg0 := reflect.ValueOf([]byte(str))
 	vs := f.Call([]reflect.Value{arg0})
-	if !vs[1].IsNil() {
+	if str != "" && !vs[1].IsNil() {
 		log.Warningf(ctx, "faild to get conversationToken: %v", vs[1])
 	}
 	return vs[0]
