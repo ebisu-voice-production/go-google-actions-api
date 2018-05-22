@@ -102,6 +102,37 @@ func (res *AppResponse) AttachCardButton(title string, formatted string, label s
 	return res
 }
 
+func (res *AppResponse) AttachMediaResponse(name string, description string, contentUrl string, imageUrl string) *AppResponse {
+	richResponse := findRichResponse(res)
+	if richResponse == nil {
+		return res
+	}
+	audio := Audio
+	mediaObject := MediaObject{
+		Name:        name,
+		Description: description,
+		ContentUrl:  contentUrl,
+	}
+	if imageUrl != "" {
+		image := Image{
+			Url:               imageUrl,
+			AccessibilityText: "Media Image",
+		}
+		mediaObject.LargeImage = &image
+	}
+	mediaResponse := MediaResponse{
+		MediaType:    &audio,
+		MediaObjects: []MediaObject{mediaObject},
+	}
+	item := Item{
+		MediaResponse: &mediaResponse,
+	}
+	if len(richResponse.Items) >= 1 {
+		richResponse.Items = append(richResponse.Items, item)
+	}
+	return res
+}
+
 func (res *AppResponse) AttachLinkOut(title string, url string) *AppResponse {
 	richResponse := findRichResponse(res)
 	if richResponse == nil {
