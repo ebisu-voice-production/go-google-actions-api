@@ -25,42 +25,34 @@ func buildRichResponse(text string, ssml string) *RichResponse {
 }
 
 func (res *AppResponse) Tell(text string) *AppResponse {
+	return res.TellBoth(text, "")
+}
+
+func (res *AppResponse) TellSsml(ssml string) *AppResponse {
+	return res.TellBoth("", ssml)
+}
+
+func (res *AppResponse) TellBoth(text string, ssml string) *AppResponse {
 	res.FinalResponse = &FinalResponse{
-		RichResponse: buildRichResponse(text, ""),
+		RichResponse: buildRichResponse(text, ssml),
 	}
 	return res
 }
 
 func (res *AppResponse) Ask(text string) *AppResponse {
-	res.ExpectUserResponse = true
-	res.ExpectedInputs = []ExpectedInput{
-		{
-			InputPrompt: &InputPrompt{
-				RichInitialPrompt: buildRichResponse(text, ""),
-			},
-			PossibleIntents: []ExpectedIntent{
-				{
-					Intent: "actions.intent.TEXT",
-				},
-			},
-		},
-	}
-	return res
-}
-
-func (res *AppResponse) TellSsml(ssml string) *AppResponse {
-	res.FinalResponse = &FinalResponse{
-		RichResponse: buildRichResponse("", ssml),
-	}
-	return res
+	return res.AskBoth(text, "")
 }
 
 func (res *AppResponse) AskSsml(ssml string) *AppResponse {
+	return res.AskBoth("", ssml)
+}
+
+func (res *AppResponse) AskBoth(text string, ssml string) *AppResponse {
 	res.ExpectUserResponse = true
 	res.ExpectedInputs = []ExpectedInput{
 		{
 			InputPrompt: &InputPrompt{
-				RichInitialPrompt: buildRichResponse("", ssml),
+				RichInitialPrompt: buildRichResponse(text, ssml),
 			},
 			PossibleIntents: []ExpectedIntent{
 				{
