@@ -130,3 +130,11 @@ func (req *AppRequest) HasSurfaceWebBrowser() bool {
 func (req *AppRequest) HasAvailableSurfaceWebBrowser() bool {
 	return req.hasAvailableSurfaceCapability(CapabilityWebBrowser)
 }
+
+func (req *AppRequest) HasSurfaceMediaResponseAudio() bool {
+	return req.hasSurfaceCapability(CapabilityMediaResponseAudio)
+}
+
+func (req *AppRequest) HasAvailableSurfaceMediaResponseAudio() bool {
+	return req.hasAvailableSurfaceCapability(CapabilityMediaResponseAudio)
+}
