@@ -233,3 +233,8 @@ type InputValueDataForNewSurface struct {
 	NotificationTitle string              `json:"notificationTitle,omitempty"`
 	Capabilities      []SurfaceCapability `json:"capabilities,omitempty"`
 }
+
+type InputValueDataForSignIn struct {
+	Type       string `json:"@type,omitempty"`
+	OptContext string `json:"optContext,omitempty"`
+}

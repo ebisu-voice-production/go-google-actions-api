@@ -170,7 +170,11 @@ func (res *AppResponse) AskForConfirmation(text string) *AppResponse {
 	return res
 }
 
-func (res *AppResponse) AskForSignIn() *AppResponse {
+func (res *AppResponse) AskForSignIn(text string) *AppResponse {
+	inputValueData := InputValueDataForSignIn{
+		Type:       "type.googleapis.com/google.actions.v2.SignInValueSpec",
+		OptContext: text,
+	}
 	res.ExpectUserResponse = true
 	res.ExpectedInputs = []ExpectedInput{
 		{
@@ -179,7 +183,8 @@ func (res *AppResponse) AskForSignIn() *AppResponse {
 			},
 			PossibleIntents: []ExpectedIntent{
 				{
-					Intent: "actions.intent.SIGN_IN",
+					Intent:         "actions.intent.SIGN_IN",
+					InputValueData: inputValueData,
 				},
 			},
 		},
