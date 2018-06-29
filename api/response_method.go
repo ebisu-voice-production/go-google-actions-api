@@ -133,6 +133,20 @@ func (res *AppResponse) AttachMediaResponse(name string, description string, con
 	return res
 }
 
+func (res *AppResponse) AttachSuggestions(titles []string) *AppResponse {
+	richResponse := findRichResponse(res)
+	if richResponse == nil {
+		return res
+	}
+	suggestions := make([]Suggestion, 0, len(titles))
+	for _, title := range titles {
+		suggestion := Suggestion{Title: title}
+		suggestions = append(suggestions, suggestion)
+	}
+	richResponse.Suggestions = suggestions
+	return res
+}
+
 func (res *AppResponse) AttachLinkOut(title string, url string) *AppResponse {
 	richResponse := findRichResponse(res)
 	if richResponse == nil {
