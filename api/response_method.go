@@ -133,13 +133,20 @@ func (res *AppResponse) AttachMediaResponse(name string, description string, con
 	return res
 }
 
+func min(x, y int) int {
+	if x < y {
+		return x
+	}
+	return y
+}
+
 func (res *AppResponse) AttachSuggestions(titles []string) *AppResponse {
 	richResponse := findRichResponse(res)
 	if richResponse == nil {
 		return res
 	}
-	suggestions := make([]Suggestion, 0, len(titles))
-	for _, title := range titles {
+	suggestions := make([]Suggestion, 0, 8)
+	for _, title := range titles[0:min(8, len(titles))] {
 		suggestion := Suggestion{Title: title}
 		suggestions = append(suggestions, suggestion)
 	}
