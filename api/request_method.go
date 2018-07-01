@@ -85,6 +85,21 @@ func (req *AppRequest) GetArgumentBoolValue(name string) bool {
 	return argument.BoolValue
 }
 
+func (req *AppRequest) GetMediaStatusArgument() string {
+	argument := req.pickFirstArgument("MEDIA_STATUS")
+	if argument == nil {
+		return ""
+	}
+	if argument.Extension == nil {
+		return ""
+	}
+	dic, _ := argument.Extension.(map[string]string)
+	if dic["@type"] != "type.googleapis.com/google.actions.v2.MediaStatus" {
+		return ""
+	}
+	return dic["status"]
+}
+
 func (req *AppRequest) GetConversationToken() string {
 	if req.Conversation == nil {
 		return ""
