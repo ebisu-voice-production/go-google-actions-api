@@ -1,0 +1,26 @@
+{
+  "user": { "userId": "1530423558181", "locale": "ja-JP" },
+  "conversation": {
+    "conversationId": "1530423558181",
+    "type": "ACTIVE",
+    "conversationToken": ""
+  },
+  "inputs": [{
+    "intent": "actions.intent.MEDIA_STATUS",
+    "rawInputs": [{ "inputType": "VOICE" }],
+    "arguments": [{
+      "name": "MEDIA_STATUS",
+      "extension": {
+        "@type": "type.googleapis.com/google.actions.v2.MediaStatus",
+        "status": "FINISHED"
+      }
+    }]
+  }],
+  "surface": {
+    "capabilities": [{
+      "name": "actions.capability.MEDIA_RESPONSE_AUDIO"
+    }, {
+      "name": "actions.capability.AUDIO_OUTPUT"
+    }]
+  }
+}

@@ -93,11 +93,12 @@ func (req *AppRequest) GetMediaStatusArgument() string {
 	if argument.Extension == nil {
 		return ""
 	}
-	dic, _ := argument.Extension.(map[string]string)
+	dic, _ := argument.Extension.(map[string]interface{})
 	if dic["@type"] != "type.googleapis.com/google.actions.v2.MediaStatus" {
 		return ""
 	}
-	return dic["status"]
+	status, _ := dic["status"].(string)
+	return status
 }
 
 func (req *AppRequest) GetConversationToken() string {
