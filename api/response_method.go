@@ -77,29 +77,34 @@ func findRichResponse(res *AppResponse) *RichResponse {
 	return nil
 }
 
-func (res *AppResponse) AttachCardButton(title string, formatted string, label string, url string) *AppResponse {
+func (res *AppResponse) AttachBasicCard(basicCard *BasicCard) *AppResponse {
 	richResponse := findRichResponse(res)
 	if richResponse == nil {
 		return res
 	}
 	item := Item{
-		BasicCard: &BasicCard{
-			Title:         title,
-			FormattedText: formatted,
-			Buttons: []Button{
-				{
-					Title: label,
-					OpenUrlAction: &OpenUrlAction{
-						Url: url,
-					},
-				},
-			},
-		},
+		BasicCard: basicCard,
 	}
 	if len(richResponse.Items) >= 1 {
 		richResponse.Items = append(richResponse.Items, item)
 	}
 	return res
+}
+
+func (res *AppResponse) AttachCardButton(title string, formatted string, label string, url string) *AppResponse {
+	basicCard := BasicCard{
+		Title:         title,
+		FormattedText: formatted,
+		Buttons: []Button{
+			{
+				Title: label,
+				OpenUrlAction: &OpenUrlAction{
+					Url: url,
+				},
+			},
+		},
+	}
+	return res.AttachBasicCard(&basicCard)
 }
 
 func (res *AppResponse) AttachMediaResponse(name string, description string, contentUrl string, imageUrl string) *AppResponse {
