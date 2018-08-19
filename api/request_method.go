@@ -101,6 +101,22 @@ func (req *AppRequest) GetMediaStatusArgument() string {
 	return status
 }
 
+func (req *AppRequest) GetNewSurfaceArgument() string {
+	argument := req.pickFirstArgument("NEW_SURFACE")
+	if argument == nil {
+		return ""
+	}
+	if argument.Extension == nil {
+		return ""
+	}
+	dic, _ := argument.Extension.(map[string]interface{})
+	if dic["@type"] != "type.googleapis.com/google.actions.v2.NewSurfaceValue" {
+		return ""
+	}
+	status, _ := dic["status"].(string)
+	return status
+}
+
 func (req *AppRequest) GetConversationToken() string {
 	if req.Conversation == nil {
 		return ""
