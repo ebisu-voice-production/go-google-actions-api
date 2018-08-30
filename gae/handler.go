@@ -13,6 +13,13 @@ import (
 	"github.com/ebisu-voice-production/go-google-actions-api/api"
 )
 
+type key int
+
+const (
+	KEY_UNKNOWN key = iota
+	KEY_URL_PATH
+)
+
 type AppHandler struct {
 	// UnmarshalConversationToken([]byte) (*ConversationToken, error)
 	UnmarshalConversationToken interface{}
@@ -83,6 +90,7 @@ func (a *AppHandler) setUserStorage(ctx context.Context, req *api.AppRequest, re
 func (a *AppHandler) HandleRequest(w http.ResponseWriter, r *http.Request) {
 	ctx := appengine.NewContext(r)
 	defer r.Body.Close()
+	ctx = context.WithValue(ctx, KEY_URL_PATH, r.URL.Path)
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -115,4 +123,10 @@ func (a *AppHandler) HandleRequest(w http.ResponseWriter, r *http.Request) {
 	log.Debugf(ctx, "response body: %s", js)
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(js)
+}
+
+func UrlPath(ctx context.Context) string {
+	value := ctx.Value(KEY_URL_PATH)
+	str, _ := value.(string)
+	return str
 }
