@@ -18,6 +18,7 @@ type key int
 const (
 	KEY_UNKNOWN key = iota
 	KEY_URL_PATH
+	KEY_URL_HOST
 )
 
 type AppHandler struct {
@@ -91,6 +92,7 @@ func (a *AppHandler) HandleRequest(w http.ResponseWriter, r *http.Request) {
 	ctx := appengine.NewContext(r)
 	defer r.Body.Close()
 	ctx = context.WithValue(ctx, KEY_URL_PATH, r.URL.Path)
+	ctx = context.WithValue(ctx, KEY_URL_HOST, r.URL.Host)
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -127,6 +129,12 @@ func (a *AppHandler) HandleRequest(w http.ResponseWriter, r *http.Request) {
 
 func UrlPath(ctx context.Context) string {
 	value := ctx.Value(KEY_URL_PATH)
+	str, _ := value.(string)
+	return str
+}
+
+func UrlHost(ctx context.Context) string {
+	value := ctx.Value(KEY_URL_HOST)
 	str, _ := value.(string)
 	return str
 }
