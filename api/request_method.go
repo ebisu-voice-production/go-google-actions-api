@@ -28,6 +28,16 @@ func (req *AppRequest) GetUserId() string {
 	return req.User.UserId
 }
 
+func (req *AppRequest) GetUserFamilyName() string {
+	if req.User == nil {
+		return ""
+	}
+	if req.User.Profile == nil {
+		return ""
+	}
+	return req.User.Profile.FamilyName
+}
+
 func (req *AppRequest) GetAccessToken() string {
 	if req.User == nil {
 		return ""
