@@ -18,6 +18,7 @@ type AppRequest struct {
 
 type User struct {
 	UserId              string               `json:"userId"`
+	IdToken             string               `json:"idToken"`
 	Profile             *UserProfile         `json:"profile"`
 	AccessToken         string               `json:"accessToken"`
 	Permissions         []Permission         `json:"permissions"`
